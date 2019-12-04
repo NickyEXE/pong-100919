@@ -34,8 +34,15 @@ const ball = {
 const resetBall = () => {
     ball.x = canvas.width/2,
     ball.y = canvas.height/2,
-    ball.dx = config.ballXSpeed
-    ball.dy = config.ballYSpeed
+    // let's delay before starting each round
+    ball.dx = 0
+    ball.dy = 0
+    setTimeout(() => {
+        // Math.sign shoots it in a random direction
+        ball.dx = config.ballXSpeed * Math.sign(Math.random()-.5)
+        ball.dy = config.ballYSpeed * Math.sign(Math.random()-.5)
+    }, 1000)
+        
 }
 resetBall()
 
