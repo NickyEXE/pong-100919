@@ -9,9 +9,9 @@ const config = {
     paddleWidth: 10,
     paddleHeight: 80,
     paddleSpeed: 8,
-    ballXSpeed: 8,
-    ballYSpeed: 3
-
+    ballXSpeed: 9,
+    ballYSpeed: 3,
+    ballSlice: 4
 }
 
 canvas.width = config.canvasWidth
@@ -63,16 +63,21 @@ const checkWallCollisions = () => {
     ((ball.y - ball.r <= 0) || (ball.y + ball.r >= canvas.height)) && (ball.dy = ball.dy*(-1))
 }
 
-const reverseDirection = () => {
+const reverseDirection = (paddle) => {
     ball.dx = (-1) * ball.dx
+    // added this after lecture to make sure that if you clipped it while the ball was several pixels past the border, it wouldn't reverse direction twice.
+    ball.x += Math.sign(ball.dx)*8
+    // added this after lecture to add a slice to the hit.
+    ball.dy = (ball.y - (paddle.y + (config.paddleHeight/2)))/config.ballSlice
+
 }
 
 const checkPaddleCollisions = () => {
     if (ball.x - ball.r <= config.paddleWidth){
-        if(paddle1.checkCollision(ball)){reverseDirection()}
+        if(paddle1.checkCollision(ball)){reverseDirection(paddle1)}
     }
     if (ball.x + ball.r >= canvas.width - config.paddleWidth){
-        if(paddle2.checkCollision(ball)){reverseDirection()}
+        if(paddle2.checkCollision(ball)){reverseDirection(paddle2)}
     }
 }
 
